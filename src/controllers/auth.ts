@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { User, UserDocument, UserRoles } from "../models/user";
+import { User, UserDocument } from "../models/user";
 import { compare, hash } from "bcryptjs";
 import { generateToken } from "../utils/generateToken";
 import { ResponseError } from "./users";
@@ -24,7 +24,6 @@ export const register = async (req: Request, res: Response) => {
     username,
     email,
     password: hashedPassword,
-    userRole: UserRoles.BUYER,
   })
     .then((user: UserDocument): Response<UserDocument> => res.json(user))
     .catch(

@@ -6,15 +6,9 @@ interface UserInterface {
   email: string;
   password: string;
   resetToken?: string | null;
-  userRole: UserRoles;
 }
 
 export type UserDocument = UserInterface & Document;
-
-export enum UserRoles {
-  BUYER = "BUYER",
-  SELLER = "SELLER",
-}
 
 const { Schema } = mongoose;
 
@@ -37,10 +31,6 @@ const userSchema = new Schema({
     type: String,
     default: null,
     expires: "60m",
-  },
-  userRole: {
-    type: String,
-    default: UserRoles.BUYER,
   },
 });
 
