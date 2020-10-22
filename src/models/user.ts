@@ -1,16 +1,22 @@
 import mongoose, { Document } from "mongoose";
 
-const { Schema } = mongoose;
-
 interface UserInterface {
   _id: string;
   username: string;
   email: string;
   password: string;
-  resetToken?: string;
+  resetToken?: string | null;
+  userRole: UserRoles;
 }
 
 export type UserDocument = UserInterface & Document;
+
+export enum UserRoles {
+  BUYER = "BUYER",
+  SELLER = "SELLER",
+}
+
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
   username: {
@@ -32,9 +38,10 @@ const userSchema = new Schema({
     default: null,
     expires: "60m",
   },
+  userRole: {
+    type: String,
+    default: UserRoles.BUYER,
+  },
 });
 
-export const User = mongoose.model<UserInterface & Document>(
-  "User",
-  userSchema
-);
+export const User = mongoose.model<UserDocument>("User", userSchema);
