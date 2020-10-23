@@ -6,16 +6,25 @@ import { ResponseError } from "./users";
 import { v4 as uuid4 } from "uuid";
 import { mailToken } from "../utils/mailToken";
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (
+  req: Request,
+  res: Response
+): Promise<Response<ResponseError> | void> => {
   const { username, email, password } = req.body;
   if (username.length < 6) {
-    throw new Error("Username must be at least 6 characters");
+    return res.send({
+      message: "Username must be at least 6 characters long",
+    });
   }
   if (!email.includes("@")) {
-    throw new Error("Please enter a valid email");
+    return res.send({
+      message: "Please enter a valid email",
+    });
   }
   if (password.length < 8) {
-    throw new Error("Password must be at least 8 characters long");
+    return res.send({
+      message: "Password must be at least 8 characters long",
+    });
   }
 
   const hashedPassword = await hash(password, 12);
@@ -47,9 +56,10 @@ export const login = async (req: Request, res: Response) => {
       ): Promise<void | Response<UserDocument | ResponseError>> => {
         const dehashedPassword: boolean = await compare(
           password,
-          user?.password as string
+          user!.password
         );
-        if (!user || !dehashedPassword) {
+
+        if (!dehashedPassword) {
           return res.send({
             message: "Username/Password don't match",
           });
@@ -78,27 +88,31 @@ export const requestResetPassword = (req: Request, res: Response) => {
         user: UserDocument | null
       ): Promise<void | Response<ResponseError>> => {
         if (!user) {
-          //We don't want to let the user know if the email belongs to a user, to prevent malicious attacks.
           return res.send({
-            message:
-              "Please check your email for the link to reset your password",
+            message: "User not found",
           });
         }
         await mailToken(token, user?.email as string);
         return res.send({
           message:
             "Please check your email for the link to reset your password",
+          token,
         });
       }
     )
     .catch((e) => console.log(e));
 };
 
-export const resetPassword = async (req: Request, res: Response) => {
+export const resetPassword = async (
+  req: Request,
+  res: Response
+): Promise<Response<ResponseError> | void> => {
   const { newPassword } = req.body;
   const { token } = req.params;
   if (newPassword.length < 8) {
-    throw new Error("Password must be at least 8 characters long");
+    return res.send({
+      message: "Password must be at least 8 characters long",
+    });
   }
   const hashedPassword = await hash(newPassword, 12);
 

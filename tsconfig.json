@@ -22,7 +22,7 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "baseUrl": ".",
-    "typeRoots": ["./typings"]
+    "types": ["jest", "node"]
   },
   "exclude": ["node_modules"],
   "include": ["./src/**/*.tsx", "./src/**/*.ts", "./modules.d.ts"]
