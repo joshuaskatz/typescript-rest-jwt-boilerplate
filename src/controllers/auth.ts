@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { User, UserDocument } from "../models/user";
 import { compare, hash } from "bcryptjs";
 import { generateToken } from "../utils/generateToken";
-import { ResponseError } from "./users";
+import { ResponseError } from "../types";
 import { v4 as uuid4 } from "uuid";
 import { mailToken } from "../utils/mailToken";
 

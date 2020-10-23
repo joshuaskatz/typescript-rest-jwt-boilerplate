@@ -1,11 +1,6 @@
 import { NextFunction, Request } from "express";
 import { verify } from "jsonwebtoken";
-
-export interface AuthPayload {
-  userId: string;
-  iat: number;
-  exp: number;
-}
+import { AuthPayload } from "../types";
 
 export const isAuth = (req: Request, __: any, next: NextFunction) => {
   const auth = req.headers.authorization;

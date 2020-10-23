@@ -1,12 +1,5 @@
 import mongoose, { Document } from "mongoose";
-
-interface UserInterface {
-  _id: string;
-  username: string;
-  email: string;
-  password: string;
-  resetToken?: string | null;
-}
+import { UserInterface } from "../types";
 
 export type UserDocument = UserInterface & Document;
 
