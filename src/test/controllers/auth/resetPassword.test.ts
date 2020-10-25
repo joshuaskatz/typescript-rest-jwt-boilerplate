@@ -44,7 +44,7 @@ describe("POST /requestResetPassword & /resetPassword/:id", () => {
 
   it("Should not reset password if length is too short", async (done) => {
     const response = await request(app)
-      .post(`/resetPassword/${user!.resetToken}`)
+      .put(`/resetPassword/${user!.resetToken}`)
       .send({ newPassword: "pass" });
 
     expect(response.body).toMatchObject({
@@ -55,7 +55,7 @@ describe("POST /requestResetPassword & /resetPassword/:id", () => {
 
   it("Should reset password on user", async (done) => {
     const response = await request(app)
-      .post(`/resetPassword/${user!.resetToken}`)
+      .put(`/resetPassword/${user!.resetToken}`)
       .send({ newPassword: "newPassword" });
 
     expect(response.body).toMatchObject({
@@ -66,7 +66,7 @@ describe("POST /requestResetPassword & /resetPassword/:id", () => {
 
   it("Should not reset password if the token is incorrect/expired", async (done) => {
     const response = await request(app)
-      .post(`/resetPassword/incorrectToken`)
+      .put(`/resetPassword/incorrectToken`)
       .send({ newPassword: "newPassword" });
 
     expect(response.body).toMatchObject({
